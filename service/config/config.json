@@ -1,0 +1,6 @@
+{
+  "port": 5000,
+  "mongo": {
+    "address": "@ds031611.mongolab.com:31611/sgt-fitness"
+  }
+}

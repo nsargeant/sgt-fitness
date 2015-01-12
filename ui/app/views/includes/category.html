@@ -1,0 +1,8 @@
+<h3><a href="{{'#/workouts/' + category._id}}">{{category.name}}</a>
+  <span>
+    <button class="btn btn-primary btn-sm pull-right"><span class="glyphicon glyphicon-plus"></span></button>
+  </span>
+</h3>
+<div class="list-group">
+  <a href="{{'#/workouts/' + category._id + '/'+ lift._id}}" class="list-group-item" ng-repeat="lift in category.lifts">{{lift.name}}</a>
+</div>
