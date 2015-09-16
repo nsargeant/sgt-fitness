@@ -1,4 +1,6 @@
-var db = require('./db');
+var db = require('./db'),
+  entry = require('./entry.js'),
+  async = require('async');
 
 var liftSchema = new db.Schema({
   timestamp: Date,
@@ -18,7 +20,7 @@ var Lift = db.mongoose.model('Lift', liftSchema);
  *		- err: Error if one occurs
  *		- lift: The newly saved lift object
  */
-module.exports.createNewLift = function (blob, callback) {
+module.exports.createNewLift = function(blob, callback) {
   var lift = new Lift();
   lift.timestamp = new Date();
   lift.name = blob.name;
@@ -35,7 +37,7 @@ module.exports.createNewLift = function (blob, callback) {
  *		- err: Error if one occurs
  *		- lifts: An array of Lift objects as saved in the db
  */
-module.exports.getAllLifts = function (query, callback) {
+module.exports.getAllLifts = function(query, callback) {
   Lift.find(query, callback);
 }
 
@@ -52,11 +54,50 @@ module.exports.getAllLifts = function (query, callback) {
 //   }, callback);
 // }
 
-module.exports.getLift = function (id, callback) {
+module.exports.getLift = function(id, callback) {
   Lift.findOne({
     _id: id
   }, callback)
 }
+
+module.exports.getLiftWithEntries = function(id, callback) {
+  async.parallel([
+
+    function(cb) {
+      Lift.findOne({
+        _id: id
+      }, cb)
+    },
+    function(cb) {
+      entry.getAllEntries({
+        lift: id
+      }, cb);
+    }
+  ], function(err, results) {
+    var lift = results[0];
+    var entries = results[1];
+
+    var result = {
+      _id: lift._id,
+      __v: lift.__v,
+      timestamp: lift.timestamp,
+      name: lift.name,
+      category: lift.category,
+      entries: entries.sort(function compare(a, b) {
+        if (a.date < b.date) {
+          return -1;
+        }
+        if (a.data > b.date) {
+          return 1;
+        }
+        return 0;
+      })
+    }
+
+    callback(err, result);
+  });
+}
+
 
 // module.exports.getRecentLifts = function (id, limit, callback) {
 //   var limit = limit || 10;
@@ -81,10 +122,10 @@ module.exports.getLift = function (id, callback) {
  *    - lifts: An array of Lift objects as saved in the db
  *
  */
-module.exports.updateLift = function (id, updates, callback) {
+module.exports.updateLift = function(id, updates, callback) {
   Lift.findOne({
     _id: id
-  }, function (err, lift) {
+  }, function(err, lift) {
     if (err) {
       callback(err);
     } else if (!lift) {
@@ -107,7 +148,7 @@ module.exports.updateLift = function (id, updates, callback) {
  *	callback:
  *		- err: Error if one occurs
  */
-module.exports.deleteLift = function (id, callback) {
+module.exports.deleteLift = function(id, callback) {
   Lift.remove({
     _id: id
   }, callback);

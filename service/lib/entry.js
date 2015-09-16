@@ -2,10 +2,9 @@ var db = require('./db');
 
 var entrySchema = new db.Schema({
   timestamp: Date,
-  name: String,
+  date: Date,
   lift: String,
-  goal: Object,
-  actual: Object
+  sets: Array
 });
 
 var Entry = db.mongoose.model('Entry', entrySchema);
@@ -23,8 +22,9 @@ var Entry = db.mongoose.model('Entry', entrySchema);
 module.exports.createNewEntry = function (blob, callback) {
   var entry = new Entry();
   entry.timestamp = new Date();
-  entry.name = blob.name;
-  entry.category = blob.category;
+  entry.date = blob.date;
+  entry.lift = blob.lift;
+  entry.sets = blob.sets;
 
   entry.save(callback);
 }

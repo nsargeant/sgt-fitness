@@ -1,0 +1,52 @@
+.chart-container {
+	overflow-x: auto;
+}
+.chart-container .table {
+	min-width: 910px;
+}
+.no-padding {
+	padding: 0 !important;
+}
+
+.no-border {
+	border: none !important;
+  border-radius: 0 !important;
+}
+
+.max-header th {
+	background-color: #e8e8e8;
+}
+
+.max-result td {
+	background-color: #f8f8f8;
+}
+
+.left-col {
+	max-width: 25px;
+}
+
+
+.workout-container {
+	position: relative;
+}
+.workout-heading .add-entry-btn {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.add-entry-container {
+	position: absolute;
+  z-index: 5;
+  background-color: white;
+  top: 22px;
+  right: 0;
+  width: 50%;
+  min-width: 300px;
+
+	border: 1px solid #cccccc;
+	border-radius: 10px;
+
+	padding: 15px;
+}
+.add-entry {
+	min-height: 34px;
+}

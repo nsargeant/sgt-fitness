@@ -1,0 +1,24 @@
+<div class="row">
+	<div class="col-md-12 chart-container">
+		<table class="table table-bordered">
+			<thead>
+				<tr class="max-header">
+					<th class="left-col"></th>
+					<th ng-repeat="col in ctrl.chart[0] track by $index" class="text-center">{{:: ctrl.maxReps - $index}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="max-result">
+					<td class="left-col text-center">Max:</td>
+					<td class="text-center" ng-repeat="col in ctrl.chart[0] track by $index"></td>
+				</tr>
+				<tr ng-repeat="week in ctrl.chart track by $index">
+					<td class="left-col text-center">Week {{$index + 1}}</td>
+					<td class="text-center" ng-repeat="weigth in week track by $index">
+						{{weigth || '-'}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

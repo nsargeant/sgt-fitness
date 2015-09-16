@@ -1,0 +1,43 @@
+<div class="add-entry">
+	<button class="btn btn-primary add-entry-btn" ng-if="!active" ng-click="show()"><span class="glyphicon glyphicon-plus"></span> Add Entry</button>
+
+	<div class="add-entry-container" ng-if="active">
+		<span class="close" ng-click="hide()">&times;</span>
+		<h3>Add entry</h3>
+		<form class="add-entry-form" ng-submit="save()">
+			<div class="form-group">
+				<label for="date">Date</label>
+				<input id="date" required type="date" class="form-control" ng-model="ctrl.entry.date">
+			</div>
+			<div class="row">
+					<div class="col-xs-5">
+						<label for="weight">Weight</label>
+					</div>
+					<div class="col-xs-5">
+						<label for="reps">Reps</label>
+					</div>
+					<div class="col-xs-2 placeholder"></div>
+			</div>
+			<div class="form-group" ng-repeat="set in ctrl.entry.sets">
+				<div class="row">
+					<div class="col-xs-5">
+						<input id="weight" required type="number" min="1" class="form-control" placeholder="lbs" ng-model="set.weight">
+					</div>
+					
+					<div class="col-xs-5">
+						<input id="reps" required type="number" min="1" class="form-control" placeholder="reps" ng-model="set.reps">
+					</div>
+					<div ng-if="$index < ctrl.entry.sets.length - 1" class="col-xs-2 placeholder">
+						<button type="button" class="btn btn-danger remove-btn pull-right" ng-click="ctrl.removeSet($index)"><span class="glyphicon glyphicon-minus"></span></button>
+					</div>
+					<div ng-if="$index === ctrl.entry.sets.length - 1" class="col-xs-2 placeholder">
+						<button type="button" class="btn btn-success add-btn pull-right" ng-click="ctrl.addSet()"><span class="glyphicon glyphicon-plus"></span></button>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary pull-right">Save</button>
+			</div>
+		</form>
+	</div>
+</div>

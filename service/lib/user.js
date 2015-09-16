@@ -34,7 +34,6 @@ module.exports.createNewUser = function(blob, callback) {
   user.friends = [];
   user.timestamp = new Date();
 
-  console.log('Saving new user:', user);
   user.save(callback);
 }
 

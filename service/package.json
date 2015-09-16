@@ -15,11 +15,13 @@
     "fitness"
   ],
   "dependencies": {
+    "async": "^1.4.2",
     "body-parser": "1.9.0",
     "cors": "2.4.2",
     "express": "4.9.5",
     "ip": "0.3.2",
-    "mongoose": "^3.8.21",
+    "lodash": "^3.10.1",
+    "mongoose": "4.1.6",
     "morgan": "^1.5.1",
     "node-uuid": "1.4.1"
   },
@@ -28,12 +30,13 @@
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-nodeunit": "^0.4.1",
     "grunt-contrib-watch": "^0.6.1",
-    "load-grunt-tasks": "^1.0.0",
-    "time-grunt": "^1.0.0",
     "grunt-mocha-cli": "^1.11.0",
-    "jshint-stylish": "^1.0.0"
+    "jshint-stylish": "^1.0.0",
+    "load-grunt-tasks": "^1.0.0",
+    "time-grunt": "^1.0.0"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "start": "node app.js"
   }
 }

@@ -1,4 +1,8 @@
-var db = require('./db');
+var db = require('./db'),
+  async = require('async')
+_ = require('lodash');
+
+var lift = require('./lift.js');
 
 var categorySchema = new db.Schema({
   timestamp: Date,
@@ -17,7 +21,7 @@ var Category = db.mongoose.model('Category', categorySchema);
  *		- err: Error if one occurs
  *		- category: The newly saved category object
  */
-module.exports.createNewCategory = function (blob, callback) {
+module.exports.createNewCategory = function(blob, callback) {
   var category = new Category();
   category.timestamp = new Date();
   category.name = blob.name;
@@ -33,9 +37,49 @@ module.exports.createNewCategory = function (blob, callback) {
  *		- err: Error if one occurs
  *		- categorys: An array of Category objects as saved in the db
  */
-module.exports.getAllCategories = function (callback) {
-  Category.find(callback);
-}
+module.exports.getAllCategories = function(callback) {
+  Category.find(callback).sort({
+    name: 1
+  });
+};
+
+module.exports.getAllCategoriesWithLifts = function(callback) {
+  async.parallel([
+
+    function(cb) {
+      Category.find(cb).sort({
+        name: 1
+      });
+    },
+    function(cb) {
+      lift.getAllLifts({}, cb);
+    }
+  ], function(err, results) {
+    var categories = results[0];
+    var lifts = results[1];
+    var cats = [];
+    
+    categories.forEach(function(category) {
+      var cat = {
+        _id: category.id,
+        __v: category.__v,
+        name: category.name,
+        timestamp: category.timestamp,
+        lifts: []
+      }
+
+      lifts.forEach(function (lift) {
+        if(cat._id === lift.category) {
+          cat.lifts.push(lift);
+        }
+      });
+
+      cats.push(cat);
+    });
+
+    callback(err, cats);
+  });
+};
 
 /**
  *  #getOwnerCategories
@@ -50,7 +94,7 @@ module.exports.getAllCategories = function (callback) {
 //   }, callback);
 // }
 
-module.exports.getCategory = function (id, callback) {
+module.exports.getCategory = function(id, callback) {
   Category.findOne({
     _id: id
   }, callback)
@@ -79,10 +123,10 @@ module.exports.getCategory = function (id, callback) {
  *    - categorys: An array of Category objects as saved in the db
  *
  */
-module.exports.updateCategory = function (id, updates, callback) {
+module.exports.updateCategory = function(id, updates, callback) {
   Category.findOne({
     _id: id
-  }, function (err, category) {
+  }, function(err, category) {
     if (err) {
       callback(err);
     } else if (!category) {
@@ -105,7 +149,7 @@ module.exports.updateCategory = function (id, updates, callback) {
  *	callback:
  *		- err: Error if one occurs
  */
-module.exports.deleteCategory = function (id, callback) {
+module.exports.deleteCategory = function(id, callback) {
   Category.remove({
     _id: id
   }, callback);

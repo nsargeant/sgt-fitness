@@ -4,8 +4,8 @@
     <button class="btn btn-primary">Add Category <span class="glyphicon glyphicon-plus"></span></button>
   </div>
 </div>
-<div class="row" ng-repeat="row in rows">
-  <div class="col-md-4" ng-repeat="category in row">
+<div class="row">
+  <div class="col-md-4" ng-repeat="category in categories">
     <div ng-include="'/views/includes/category.html'"></div>
   </div>
 </div>
